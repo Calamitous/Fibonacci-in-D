@@ -20,9 +20,6 @@ int[] fibonacci(int elements, int[] result = [])
     assert(elements < 48);
   }
 
-int[] fibonacci_iterative(int elements) {
-  if (elements == 0) {
-    return [];
   body {
     if (elements == 0) {
       return result;
@@ -31,19 +28,7 @@ int[] fibonacci_iterative(int elements) {
     return fibonacci(elements - 1, result ~ new_value);
   }
 
-  int[] result;
-  result.length = elements;
-  result[] = 1;
-  result[0] = 0;
 
-  foreach(i, element; result) {
-    if (i <= 1) {
-      continue;
-    }
-    result[i] = sum_tail(result);
-  }
-  return result;
 int sum_tail(int[] from_array) {
   return from_array[$ - 2] + from_array[$ - 1];
 }
-
