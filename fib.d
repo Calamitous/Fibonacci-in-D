@@ -9,17 +9,37 @@ void main(string[] args) {
   getopt(args, "number|elements|n|e", &number_of_elements, "help|h", &show_help);
 
   if (show_help || number_of_elements < 0) {
-    writeln("Usage:");
-    writeln();
-    writeln("    " ~ args[0] ~ " <options>");
-    writeln();
-    writeln("    number|elements|n|e    Number of elements to include in Fibonacci sequence.  Valid values are 0 to 47.");
-    writeln("    help|h                 Display this help");
-    writeln();
+    showHelp(args[0]);
+    return;
+  }
+
+  if(!isValid(number_of_elements)) {
+    showError(number_of_elements);
     return;
   }
 
   writeln(fibonacci(number_of_elements));
+}
+
+bool isValid(int number_of_elements) {
+  return number_of_elements >= 0 && number_of_elements < 48;
+}
+
+void showHelp(string cl_name) {
+  writeln("Usage:");
+  writeln();
+  writeln("    " ~ cl_name ~ " <options>");
+  writeln();
+  writeln("    number|elements|n|e    Number of elements to include in Fibonacci sequence.  Valid values are 0 to 47.");
+  writeln("    help|h                 Display this help");
+  writeln();
+  return;
+}
+
+void showError(int arg) {
+  writeln("Expected number of requested elements to be from 0 to 47.");
+  writeln("Received " ~ to!string(arg));
+  return;
 }
 
 pure int[] fibonacci(int elements, int[] result = [])
