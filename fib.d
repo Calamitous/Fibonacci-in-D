@@ -1,15 +1,28 @@
-import std.stdio, std.conv;
+import std.stdio;
+import std.conv;
+import std.getopt;
 
 void main(string[] args) {
-  int number_of_elements = 10;
-  if (args.length > 1) {
-    number_of_elements = to!int(args[1]);
+  int number_of_elements = -1;
+  bool show_help = false;
+
+  getopt(args, "number|elements|n|e", &number_of_elements, "help|h", &show_help);
+
+  if (show_help || number_of_elements < 0) {
+    writeln("Usage:");
+    writeln();
+    writeln("    " ~ args[0] ~ " <options>");
+    writeln();
+    writeln("    number|elements|n|e    Number of elements to include in Fibonacci sequence.  Valid values are 0 to 47.");
+    writeln("    help|h                 Display this help");
+    writeln();
+    return;
   }
 
   writeln(fibonacci(number_of_elements));
 }
 
-int[] fibonacci(int elements, int[] result = [])
+pure int[] fibonacci(int elements, int[] result = [])
   in {
     assert(elements >= 0);
     assert(elements < 48);
@@ -19,16 +32,18 @@ int[] fibonacci(int elements, int[] result = [])
     if (elements == 0) {
       return result;
     }
-    int new_value = result.length < 2 ? result.length : sum_tail(result);
+
+    int new_value = result.length < 2 ? to!int(result.length) : sum_tail(result);
     return fibonacci(elements - 1, result ~ new_value);
   }
 
 
-int sum_tail(int[] from_array) {
+pure int sum_tail(int[] from_array) {
   return from_array[$ - 2] + from_array[$ - 1];
 }
 
 unittest {
+  // assert(fibonacci(-1)  == []);
   assert(fibonacci(0)  == []);
   assert(fibonacci(1)  == [0]);
   assert(fibonacci(3)  == [0, 1, 1]);
